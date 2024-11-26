@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur EuroMillions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function EuroMillionsGenerator() {
+            const [numbers, setNumbers] = React.useState(null);
+
+            const generateRandomNumbers = () => {
+                // Generate 5 unique main numbers between 1 and 50
+                const mainNumbers = new Set();
+                while (mainNumbers.size < 5) {
+                    mainNumbers.add(Math.floor(Math.random() * 50) + 1);
+                }
+
+                // Generate 2 unique star numbers between 1 and 12
+                const starNumbers = new Set();
+                while (starNumbers.size < 2) {
+                    starNumbers.add(Math.floor(Math.random() * 12) + 1);
+                }
+
+                setNumbers({
+                    mainNumbers: Array.from(mainNumbers).sort((a, b) => a - b),
+                    starNumbers: Array.from(starNumbers).sort((a, b) => a - b)
+                });
+            };
+
+            return (
+                <div className="bg-white shadow-md rounded-lg p-6 max-w-md w-full">
+                    <h1 className="text-2xl font-bold mb-4 text-center">Générateur EuroMillions</h1>
+                    <button 
+                        onClick={generateRandomNumbers}
+                        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition mb-4"
+                    >
+                        Générer des numéros
+                    </button>
+                    
+                    {numbers && (
+                        <div className="text-center">
+                            <div className="mb-4">
+                                <h3 className="text-lg font-semibold">Numéros principaux</h3>
+                                <div className="flex justify-center space-x-2">
+                                    {numbers.mainNumbers.map((num) => (
+                                        <div 
+                                            key={num} 
+                                            className="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold"
+                                        >
+                                            {num}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 className="text-lg font-semibold">Numéros étoiles</h3>
+                                <div className="flex justify-center space-x-2">
+                                    {numbers.starNumbers.map((num) => (
+                                        <div 
+                                            key={num} 
+                                            className="w-10 h-10 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold"
+                                        >
+                                            {num}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<EuroMillionsGenerator />, document.getElementById('root'));
+    </script>
+</body>
+</html>
